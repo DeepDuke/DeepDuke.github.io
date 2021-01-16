@@ -230,6 +230,16 @@
               </li>
             
               <li>
+                <a href="/comment/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+                    留言板
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
                 <a href="/links/">
                   <span class="faa-parent animated-hover">
                     <i class="fa  fa-link faa-shake" aria-hidden="true"></i>
@@ -309,6 +319,20 @@
 
       <!-- .entry-content -->
       
+<div id="vcomments"></div>
+<script>
+  window.onload = function(){
+      var valine = new Valine();
+      valine.init({
+        el: '#vcomments',
+        appId: "6XizmOU54eRU3PNuBQSr0UMJ-gzGzoHsz",
+        appKey: "KzUBSaVERI5iqQByokcE1jd8",
+        path: window.location.pathname,
+        placeholder: "你是我一生只会遇见一次的惊喜 ..."
+      })
+  }
+</script>
+
       <div class="single-reward">
         <div class="reward-open">赏
           <div class="reward-main">
@@ -560,6 +584,16 @@ $(document).ready(function() {
               </li>
             
           </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/comment/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+            留言板
+          </span>
+        </a>
         
       </li>
     
