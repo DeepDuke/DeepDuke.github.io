@@ -314,25 +314,25 @@
         
         <div class="entry-content">
           <h1 id="hexo-常用命令"><a href="#hexo-常用命令" class="headerlink" title="hexo 常用命令"></a>hexo 常用命令</h1><p>初始化</p>
-<pre class="line-numbers language-nodeJS" data-language="nodeJS"><code class="language-nodeJS">hexo init<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code class="nodeJS">hexo init</code></pre>
 <p>生成一篇post,</p>
-<pre class="line-numbers language-nodeJS" data-language="nodeJS"><code class="language-nodeJS">hexo new post &quot;文章名称&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code class="nodeJS">hexo new post &quot;文章名称&quot;</code></pre>
 <p>生成html静态文件</p>
-<pre class="line-numbers language-nodeJS" data-language="nodeJS"><code class="language-nodeJS">hexo generate  <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code class="nodeJS">hexo generate  </code></pre>
 <p>其等价缩写命令为</p>
-<pre class="line-numbers language-none"><code class="language-none">hexo g<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code class="nodeJS">hexo g</code></pre>
 <p>本地预览</p>
-<pre class="line-numbers language-none"><code class="language-none">hexo server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code class="nodeJS">hexo server</code></pre>
 <p>其等价缩写命令为</p>
-<pre class="line-numbers language-none"><code class="language-none">hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code class="nodeJS">hexo s</code></pre>
 <p>默认端口为<code>4000</code>,默认访问地址为<code>https://localhost:4000</code></p>
 <p>如果需要写草稿，完善之后再发布，</p>
 <p>生成一篇draft草稿的命令为:</p>
-<pre class="line-numbers language-none"><code class="language-none">hexo new draft &quot;文章草稿名称&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code class="nodeJS">hexo new draft &quot;文章草稿名称&quot;</code></pre>
 <p>本地预览草稿：</p>
-<pre class="line-numbers language-none"><code class="language-none">hexo S --draft<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code class="nodeJS">hexo S --draft</code></pre>
 <p>写完草稿后，把草稿转成正式文章：</p>
-<pre class="line-numbers language-none"><code class="language-none">hexo P &lt;filename&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code class="nodeJS"> hexo P &lt;filename&gt;</code></pre>
 <p>其中，<code>filename</code> 是为不包含 md 后缀的文章名称。其原理是将文章从 <code>source/_drafts</code> 移动到 <code>source/_posts</code>。接下来执行 <code>hexo g</code> 和 <code>hexo d</code> 即可。</p>
 
         </div>
