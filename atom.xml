@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hi, DeepDuke</title>
+  
+  
+  <link href="https://deepduke.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://deepduke.github.io/"/>
+  <updated>2021-01-16T05:16:34.728Z</updated>
+  <id>https://deepduke.github.io/</id>
+  
+  <author>
+    <name>DeepDuke</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>This is also a test</title>
+    <link href="https://deepduke.github.io/2021/01/16/This-is-a-test%20-%202/"/>
+    <id>https://deepduke.github.io/2021/01/16/This-is-a-test%20-%202/</id>
+    <published>2021-01-16T03:37:28.000Z</published>
+    <updated>2021-01-16T05:16:34.728Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;This-is-my-test&quot;&gt;&lt;a href=&quot;#This-is-my-test&quot; class=&quot;headerlink&quot; title=&quot;This is my test&quot;&gt;&lt;/a&gt;This is my test&lt;/h1&gt;&lt;p&gt;test</summary>
+        
+      
+    
+    
+    
+    <category term="生活" scheme="https://deepduke.github.io/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+    <category term="悦读" scheme="https://deepduke.github.io/tags/%E6%82%A6%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>This is a test</title>
+    <link href="https://deepduke.github.io/2021/01/15/This-is-a-test/"/>
+    <id>https://deepduke.github.io/2021/01/15/This-is-a-test/</id>
+    <published>2021-01-15T15:57:28.000Z</published>
+    <updated>2021-01-16T05:38:39.508Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;This-is-my-test&quot;&gt;&lt;a href=&quot;#This-is-my-test&quot; class=&quot;headerlink&quot; title=&quot;This is my test&quot;&gt;&lt;/a&gt;This is my test&lt;/h1&gt;&lt;p&gt;test</summary>
+        
+      
+    
+    
+    
+    <category term="技术" scheme="https://deepduke.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+  </entry>
+  
+</feed>
