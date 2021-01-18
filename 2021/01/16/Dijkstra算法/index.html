@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <title itemprop="name">Dijkstra算法 | Hi, DeepDuke</title>
+  
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/favicon.ico">
+  
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Ubuntu:400,700|Noto+Serif+SC" media="all">
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+  <link rel="stylesheet" id="saukra_css-css" href="/css/style.css" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/lib.min.css" media="all">
+  <link rel="stylesheet" href="/css/font.css" media="all">
+  <link rel="stylesheet" href="/css/insight.css" media="all">
+  <link rel="stylesheet" href="/css/jquery.fancybox.min.css" media="all">
+  <link rel="stylesheet" href="/css/zoom.css" media="all">
+  <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<!--   <link rel="stylesheet" id="saukra_css-css" href="https://2heng.xin/wp-content/cache/autoptimize/css/autoptimize_ad42a61f4c7d4bdd9f91afcff6b5dda5.css
+" type="text/css" media="all"> -->
+  <script>
+  /*Initial Variables*/
+  var mashiro_option = new Object();
+  var mashiro_global = new Object();
+  mashiro_option.NProgressON = true;
+  /* 
+   * 邮箱信息之类的东西可以填在这里，这些js变量基本都作用于sakura-app.js
+   * 这样的设置仅是为了方便在基于PHP开发的主题中设置js变量，既然移植到了Node上，我想或许可以精简这一逻辑吧
+   */
+  mashiro_option.email_domain = "";
+  mashiro_option.email_name = "";
+  mashiro_option.cookie_version_control = "";
+  mashiro_option.qzone_autocomplete = false;
+  mashiro_option.site_name = "Sakura@DeepDuke";
+  mashiro_option.author_name = "DeepDuke";
+  mashiro_option.site_url = "https://deepduke.github.io";
+  mashiro_option.v_appId = "6XizmOU54eRU3PNuBQSr0UMJ-gzGzoHsz";
+  mashiro_option.v_appKey = "KzUBSaVERI5iqQByokcE1jd8";
+  mashiro_option.mathjax = "1";
+  mashiro_option.qq_api_url = "https://api.mashiro.top/qqinfo/"; 
+  mashiro_option.qq_avatar_api_url = "https://api.mashiro.top/qqinfo/";
+
+  // mashiro_option.jsdelivr_css_src = "https://cdn.jsdelivr.net/gh/moezx/cdn@3.4.5/css/lib.min.css";
+  // mashiro_option.float_player_on = true;
+
+  /*End of Initial Variables*/
+  </script>
+  <script type="text/javascript">
+  var bg = "https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-1.png,https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-2.jpg,https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-3.jpg,https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-4.jpg,https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-5.png,https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-6.jpg,https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-7.jpg,https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-8.jpg".split(",");
+  var bgindex = Math.floor(Math.random()*bg.length);
+  if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
+    alert('朋友，IE浏览器未适配哦~');
+  }
+  </script>
+  <style type="text/css">
+  .hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}
+  </style>
+  <style type="text/css">.site-top .lower nav{display:block !important;}.author-profile i,.post-like a,.post-share .show-share,.sub-text,.we-info a,span.sitename,.post-more i:hover,#pagination a:hover,.post-content a:hover,.float-content i:hover{color:#FE9600}.feature i,.download,.navigator i:hover,.links ul li:before,.ar-time i,span.ar-circle,.object,.comment .comment-reply-link,.siren-checkbox-radio:checked + .siren-checkbox-radioInput:after{background:#FE9600}::-webkit-scrollbar-thumb{background:#FE9600}.download,.navigator i:hover,.link-title,.links ul li:hover,#pagination a:hover,.comment-respond input[type='submit']:hover{border-color:#FE9600}.entry-content a:hover,.site-info a:hover,.comment h4 a,#comments-navi a.prev,#comments-navi a.next,.comment h4 a:hover,.site-top ul li a:hover,.entry-title a:hover,#archives-temp h3,span.page-numbers.current,.sorry li a:hover,.site-title a:hover,i.iconfont.js-toggle-search.iconsearch:hover,.comment-respond input[type='submit']:hover{color:#FE9600}.comments .comments-main{display:block !important;}.comments .comments-hidden{display:none !important;}background-position:center center;background-attachment:inherit;}
+  </style>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Hi, DeepDuke" type="application/atom+xml">
+</head>
+
+<body class="page-template page-template-user page-template-page-analytics page-template-userpage-analytics-php page page-id-1297 chinese-font serif isWebKit">
+  <div class="scrollbar" id="bar">
+  </div>
+  <a href="#" class="cd-top faa-float animated"></a>
+  <section id="main-container">
+    <div class="headertop ">
+  <div id="banner_wave_1"></div>
+  <div id="banner_wave_2"></div>
+  <figure id="centerbg" class="centerbg">
+    <div class="focusinfo no-select">
+      <div class="header-tou">
+        <a href="https://deepduke.github.io">
+          <img src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/tanzhilang.jpg">
+        </a>
+      </div>
+      <div class="header-info">
+        <p>写代码是热爱，写到世界充满爱！</p>
+        <div class="top-social_v2">
+          <li id="bg-pre">
+            <img class="flipx" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/other/next-b.svg">
+          </li>
+          
+            
+              
+                <li>
+                  <a href="http://github.com/deepduke" target="_blank" class="social-github" title="github">
+                    <img src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/icons/github.svg">
+                  </a>
+                </li>
+              
+            
+              
+                <li>
+                  <a href="mailto:czm.hit@gmail.com" target="_blank" class="social-github" title="email">
+                    <img src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/icons/email.svg">
+                  </a>
+                </li>
+              
+            
+          
+          <li id="bg-next">
+            <img src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/other/next-b.svg">
+          </li>
+        </div>
+      </div>
+    </div>
+  </figure>
+  <div id="video-container" style="">
+    <video style="object-fit: fill" id="bgvideo" class="video" video-name="" src="" width="auto" preload="auto">
+    </video>
+    <div id="video-btn" class="loadvideo videolive">
+    </div>
+    <div id="video-add">
+    </div>
+    <div class="video-stu">
+    </div>
+  </div>
+  <div class="headertop-down faa-float animated" onclick="headertop_down()">
+    <span>
+      <i class="fa fa-chevron-down" aria-hidden="true">
+      </i>
+    </span>
+  </div>
+</div>
+    <div id="page" class="site wrapper">
+      <header class="site-header no-select gizle sabit" role="banner">
+  <div class="site-top">
+    <div class="site-branding">
+      <span class="site-title">
+        <span class="logolink moe-mashiro">
+          <a href="/">
+            <span class="sakurasono">Sakura@</span>
+            <span class="shironeko">DeepDuke</span>
+          </a>
+        </span>
+      </span>
+    </div>
+    <div class="searchbox search-form-submit">
+      <i class="iconfont js-toggle-search iconsearch icon-search">
+      </i>
+    </div>
+    <div id="show-nav" class="showNav mobile-fit">
+      <div class="line line1">
+      </div>
+      <div class="line line2">
+      </div>
+      <div class="line line3">
+      </div>
+    </div>
+    <div class="lower-cantiner">
+      <div class="lower">
+        <nav class="mobile-fit-control hide">
+          <ul id="menu-new" class="menu">
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+                    首页
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    归档
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          技术
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/%E7%94%9F%E6%B4%BB/">
+                          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                          生活
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="javascript:;">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-list-ul faa-vertical" aria-hidden="true"></i>
+                    清单
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/tags/%E6%82%A6%E8%AF%BB/">
+                          <i class="fa fa-th-list faa-bounce" aria-hidden="true"></i>
+                          书单
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/bangumi/">
+                          <i class="fa fa-film faa-vertical" aria-hidden="true"></i>
+                          番组
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/music/">
+                          <i class="fa fa-headphones" aria-hidden="true"></i>
+                          歌单
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/comment/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+                    留言板
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/links/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-link faa-shake" aria-hidden="true"></i>
+                    友人帐
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+                    关于
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/about/">
+                          <i class="fa fa-meetup" aria-hidden="true"></i>
+                          我？
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/atom.xml">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-rss faa-pulse" aria-hidden="true"></i>
+                    RSS
+                  </span>
+                </a>
+                
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-7.jpg);" src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/avatar.png" data-src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-7.jpg">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      Dijkstra算法</h1>
+      <p class="entry-census">
+        <span>
+          <a href="https://deepduke.github.io">
+            <img src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/tanzhilang.jpg">
+          </a>
+        </span>
+        <span>
+          <a href="https://deepduke.github.io">DeepDuke</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2021-1-16<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
+  </div>
+
+<div id="content" class="site-content">
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h1 id="dijkstra算法">Dijkstra算法</h1>
+<h2 id="原理">原理</h2>
+<p>在图论或者导航的路径规划中，我们经常需要在一个已知地图中寻找或者规划出从起点到终点的最短路径。Dijkstra算法（中文：迪杰斯特拉算法）是用于寻找在<strong>非负权重</strong>的图中找到从起点出发到图中各个顶点的最短路径的算法。</p>
+<p>Dijkstra算法通常可以分为以下几个步骤：</p>
+<ol type="1">
+<li><strong>初始化</strong>: 设定所有顶点到起点的距离为无穷大，然后起点 <em>start</em> 到自身的距离为0; 维持一个待访问集合，首先把起点 <em>start</em> 加入这个集合 <em>S</em>。</li>
+<li><strong>找到当前待访问集合离起点最近的顶点</strong>: 取出待访问集合 <em>S</em> 中到起点 <em>start</em> 距离最短的顶点 <em>u</em></li>
+<li><strong>松弛各个邻接点到起点的距离</strong>: 访问 <em>u</em> 的每一个邻接点，看通过 <em>u</em> 作为中继点能否使邻接点到达起点的距离缩短，若更短，那么更新邻接点到起点 <em>start</em> 的最短距离。即如果该邻接点未曾加入待访问集合，那么更新它到起点的更短的距离后把这个邻接点加入待访问集合 <em>S</em>。如果该邻接点已经在待访问集合 <em>S</em> 中，那么直接更新集合 <em>S</em> 中这个顶点到起点 <em>start</em> 的距离。</li>
+<li><strong>重复 2 - 3 步直到待访问集合 <em>S</em> 变成空集合</strong>：这样即可以找到起点 <em>start</em> 到所有顶点的最短距离。如果我们是只寻找到一个终点 <em>end</em> 的最短距离的话，当 <em>u</em> 为 <em>end</em> 的时候就可以终止算法的执行。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">维基百科</a> 提供的伪代码如下：</p>
+<pre><code>function Dijkstra(Graph, source):
+ 
+        create vertex set Q
+
+        for each vertex v in Graph:            
+           dist[v] ← INFINITY                 
+           prev[v] ← UNDEFINED                
+           add v to Q                     
+        dist[source] ← 0                       
+    
+        while Q is not empty:
+            u ← vertex in Q with min dist[u]   
+                                            
+            remove u from Q
+         
+            for each neighbor v of u:           // only v that are still in Q
+               alt ← dist[u] + length(u, v)
+               if alt &lt; dist[v]:              
+                   dist[v] ← alt
+                   prev[v] ← u
+
+        return dist[], prev[]</code></pre>
+<p>上述伪代码中，<code>prev[]</code>这个数组记录每个顶点的前驱顶点，用于找到最短路径上的每一个顶点。</p>
+<p>该伪代码一开始就把所有点都加入待访问集合了，本质上和我们之前的写法是一样的，但是实际操作时我们可以一开始只把起点加入集合，这样在图中顶点数目很多的时候可以节省上述第2步的时间。</p>
+<p>值得注意的是，那么从待访问集合 <em>S</em> 中取出的顶点 <em>u</em> 到起点的距离已经是最短的了，因此当我们初始化的时候只把起点加入待访问集合的话，松弛操作 <code>if alt &lt; dist[v]:</code> 这句一方面可以用于判断是否要更新邻接点到起点的距离，同时还可以防止已经从待访问集合 <em>S</em> 中取出的顶点再度加入集合。这样当图中存在环的时候，不至于不停地把一些顶点重复加入集合 <em>S</em> 中，以致于在环困在死循环中。</p>
+<p>Dijkstra算法的时间复杂度主要取决我们怎么实现这一句 <code>u ← vertex in Q with min dist[u]</code>, 即找到待访问集合中离起点最近的顶点。</p>
+<h2 id="例子">例子</h2>
+<p>举个栗子，以leetcode中的一道题 <a target="_blank" rel="noopener" href="https://leetcode.com/problems/path-with-maximum-probability/"><strong>1514. Path with Maximum Probability</strong></a>为例:</p>
+<blockquote>
+<p>You are given an undirected weighted graph of n nodes (0-indexed), represented by an edge list where edges[i] = [a, b] is an undirected edge connecting the nodes a and b with a probability of success of traversing that edge succProb[i]. Given two nodes start and end, find the path with the maximum probability of success to go from start to end and return its success probability. If there is no path from start to end, return 0. Your answer will be accepted if it differs from the correct answer by at most 1e-5.</p>
+</blockquote>
+<p>这题要求寻找成功概率最大的路径对应的成功概率，本质可以化解为求最短路径。设任意一条路径上<em>n</em>条边的概率为 <em><span class="math inline">\(p_i\)</span></em> , 那么所求为 <span class="math inline">\(\prod\limits_{i=0}^{n-1}p_i\)</span> , 在数学等价于我们取个负对数求和在取负指数:</p>
+<p><span class="math display">\[
+\prod\limits_{i=0}^{n}p_i = exp(-\sum\limits_{i=0}^{n-1}\log{p_i}) 
+                          = exp[\sum\limits_{i=0}^{n-1}(-\log{p_i})]
+\]</span></p>
+<p><em><span class="math inline">\(p_i \in [0,1]\)</span></em>, <em><span class="math inline">\(-\log p_i \in [0, \inf]\)</span></em>, 而且 <em><span class="math inline">\(p_i\)</span></em> 越大，对应的<em><span class="math inline">\(-\log p_i\)</span></em> 越小， 也就是说我们把每条边的概率权重取个负对数作为边的权重后，问题就变成了求图的最短路径了。这时候Dijkstra算法就派上用场了。</p>
+<p>首先，最朴素的想法就是用顺序遍历的方法来 <strong>找到当前待访问集合离起点最近的顶点</strong>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">// cpp code: use linear array to implement Dijkstra&#39;s algorithm</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">class</span> Solution &#123;</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">public</span>:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    <span class="dt">double</span> maxProbability(<span class="dt">int</span> n, vector&lt;vector&lt;<span class="dt">int</span>&gt;&gt;&amp; edges, vector&lt;<span class="dt">double</span>&gt;&amp; succProb, <span class="dt">int</span> start, <span class="dt">int</span> end) &#123;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>        </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>        <span class="co">// reconstruct the undirected graph using adjacent list</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>        vector&lt;vector&lt;pair&lt;<span class="dt">int</span>, <span class="dt">double</span>&gt;&gt; &gt; adj(n);</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>        <span class="cf">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; edges.size(); i++)&#123;</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>            adj[edges[i][<span class="dv">0</span>]].push_back(&#123;edges[i][<span class="dv">1</span>], -log(succProb[i])&#125;);</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>            adj[edges[i][<span class="dv">1</span>]].push_back(&#123;edges[i][<span class="dv">0</span>], -log(succProb[i])&#125;);</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>        &#125;</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>        <span class="co">// use array to implement Dijkstra&#39;s algorithm (Time: 1664 ms)   </span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>       </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>        vector&lt;<span class="dt">double</span>&gt; dist(n, DBL_MAX);</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>        vector&lt;<span class="dt">bool</span>&gt; expanded(n, <span class="kw">false</span>);</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>        dist[start] = <span class="dv">0</span>;</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>        </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>        <span class="cf">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++)&#123;</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a>            <span class="co">// find node with minimum cost</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a>            <span class="dt">int</span> u = -<span class="dv">1</span>;</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>            <span class="dt">double</span> MIN = DBL_MAX;</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>            <span class="cf">for</span>(<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; n; j++)&#123;</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a>                <span class="cf">if</span>(expanded[j] == <span class="kw">false</span> &amp;&amp; dist[j] &lt; MIN)&#123;</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a>                    u = j;</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a>                    MIN = dist[j];</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a>                &#125;</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a>            &#125;</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a>            <span class="co">// early stop</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a>            <span class="cf">if</span>(u == -<span class="dv">1</span> || u == end) <span class="cf">break</span>;</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a>            <span class="co">// expanded node u</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true"></a>            expanded[u] = <span class="kw">true</span>;</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true"></a>            <span class="cf">for</span>(<span class="kw">auto</span> [v, w]: adj[u])&#123;</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true"></a>                <span class="cf">if</span>(dist[u] + w &lt; dist[v])&#123;</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true"></a>                    dist[v] = dist[u] + w;</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true"></a>                &#125;</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true"></a>            &#125;</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true"></a>        &#125;</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true"></a>        </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true"></a>        <span class="cf">return</span> exp(-dist[end]);</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true"></a>    &#125;</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true"></a>&#125;;</span></code></pre></div>
+<p>在上述代码中，我们使用顺序遍历来查找待访问集合中离起点距离最小的顶点。其中 <code>expnaded[]</code>用于标记顶点是否被取出了待访问集合，便于顺序寻找时排除已访问的顶点。Dijkstra算法的这种实现比较简单，但是时间耗费较多，我在leetcode测试的结果是通过所有测试用例花费了 <code>1664ms</code>。</p>
+<p>因此，我们自然就可以想到优化的起脚点，优化查找待访问集合中离起点距离最小的顶点这一步骤。常见的<code>C++</code>实现Dijkstra算法的代码中，经常使用集合容器<code>std::set</code> 或 优先队列<code>std::priority_queue</code>来实现。<code>std::set</code>底层实现是红黑树，可以实现按集合元素自动从小到大排序，而<code>std::priority_queue</code>是用堆来实现的，默认是大顶堆。</p>
+<p>因此，如果我们用<code>std::set</code>来实现Dijkstra算法:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">// cpp code: use std::set to implement DIjkstra&#39;s algorithm</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">class</span> Solution &#123;</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">public</span>:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    <span class="dt">double</span> maxProbability(<span class="dt">int</span> n, vector&lt;vector&lt;<span class="dt">int</span>&gt;&gt;&amp; edges, vector&lt;<span class="dt">double</span>&gt;&amp; succProb, <span class="dt">int</span> start, <span class="dt">int</span> end) &#123;</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>        </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>        <span class="co">// reconstruct the undirected graph using adjacent list</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>        vector&lt;vector&lt;pair&lt;<span class="dt">int</span>, <span class="dt">double</span>&gt;&gt; &gt; adj(n);</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>        <span class="cf">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; edges.size(); i++)&#123;</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>            adj[edges[i][<span class="dv">0</span>]].push_back(&#123;edges[i][<span class="dv">1</span>], -log(succProb[i])&#125;);</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>            adj[edges[i][<span class="dv">1</span>]].push_back(&#123;edges[i][<span class="dv">0</span>], -log(succProb[i])&#125;);</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>        &#125;</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>        <span class="co">// using set to implement Dijkstra&#39;s algorithm  (Time: 190 ms)    </span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>        </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>       vector&lt;<span class="dt">double</span>&gt; dist(n, DBL_MAX);</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>       dist[start] = <span class="dv">0</span>;</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>        </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>       set&lt;pair&lt;<span class="dt">double</span>, <span class="dt">int</span>&gt; &gt; st;  <span class="co">// &#123;cost, node_id&#125;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>       st.insert(&#123;dist[start], start&#125;);</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a>        </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a>       <span class="cf">while</span>(!st.empty())&#123;</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a>           <span class="dt">int</span> u = st.begin()-&gt;second;</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a>           st.erase(st.begin());</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true"></a>           </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true"></a>           <span class="cf">if</span>(u == end) <span class="cf">break</span>;</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true"></a>           </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true"></a>           <span class="cf">for</span>(<span class="kw">auto</span> [v, w]: adj[u])&#123;</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true"></a>               <span class="cf">if</span>(dist[u] + w &lt; dist[v])&#123;</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true"></a>                   st.erase(&#123;dist[v], v&#125;);</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true"></a>                   dist[v] = dist[u] + w;</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true"></a>                   st.insert(&#123;dist[v], v&#125;);</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true"></a>               &#125;</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true"></a>           &#125;</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true"></a>           </span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true"></a>       &#125;</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true"></a>       <span class="cf">return</span> exp(-dist[end]); </span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true"></a>    &#125;</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true"></a>&#125;;</span></code></pre></div>
+<p>在这个用<code>std::set</code>的实现中，可以发现基本和维基百科的伪代码一致，因为插入<code>std::set</code>的元素都是复制了一份的，不支持修改<code>std::set</code>中元素的值。所幸<code>std::set</code>支持查找和删除操作，并且它们的时间复杂度并不高。我们每次需要更新已经进入待访问顶点集合中的顶点的距离值时，先查找删除这个顶点，然后插入新距离值的顶点就可以啦！</p>
+<p>同时，用c++ STL的优先队列<code>std::priority_queue</code>来实现Dijkstra算法的话，因为它并不支持查找和删除操作，因此，当前访问的顶点的某个邻接点需要更新最短距离的话，我们只有把具有新距离值的顶点插入优先队列，但是并不删除旧的顶点。不过，这样并不影响最后结果的正确性，因为后插入的新距离值的顶点会比旧顶点先取出优先队列，再当旧顶点被取出优先队列时，由于其距离值已经是最优的了，当该顶点作为其他顶点的邻接点被访问时，不会进入<code>if(dist[u] + w &lt; dist[v])</code>中，同时该顶点的邻接点的距离也在先前就被优化了。具体代码实现如下:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">// cpp code: use std::priority_queue to implement Dijkstra&#39;s algorithm</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="kw">class</span> Solution &#123;</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="kw">public</span>:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="dt">double</span> maxProbability(<span class="dt">int</span> n, vector&lt;vector&lt;<span class="dt">int</span>&gt;&gt;&amp; edges, vector&lt;<span class="dt">double</span>&gt;&amp; succProb, <span class="dt">int</span> start, <span class="dt">int</span> end) &#123;</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>        </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>        <span class="co">// reconstruct the undirected graph using adjacent list</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>        vector&lt;vector&lt;pair&lt;<span class="dt">int</span>, <span class="dt">double</span>&gt;&gt; &gt; adj(n);</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>        <span class="cf">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; edges.size(); i++)&#123;</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>            adj[edges[i][<span class="dv">0</span>]].push_back(&#123;edges[i][<span class="dv">1</span>], -log(succProb[i])&#125;);</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>            adj[edges[i][<span class="dv">1</span>]].push_back(&#123;edges[i][<span class="dv">0</span>], -log(succProb[i])&#125;);</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>        &#125;</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>        </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>        <span class="co">//  using priority queue to implement Dijkstra&#39;s algorithm  (Time: 160 ms)</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>        </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>        vector&lt;<span class="dt">double</span>&gt; dist(n, DBL_MAX);</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>        dist[start] = <span class="fl">0.0</span>;</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>        <span class="kw">typedef</span> pair&lt;<span class="dt">double</span>, <span class="dt">int</span>&gt; pdi;</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>        priority_queue&lt;pdi, vector&lt;pdi&gt;, greater&lt;pdi&gt; &gt; pq;  <span class="co">// &#123;cost, node_id&#125;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>        pq.push(&#123;dist[start], start&#125;);</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>        </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a>        <span class="cf">while</span>(!pq.empty())&#123;</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>            <span class="dt">int</span> u = pq.top().second;</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>            pq.pop();</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a>            </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a>            <span class="cf">if</span>(u == end) <span class="cf">break</span>;</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a>            </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a>            <span class="cf">for</span>(<span class="kw">auto</span> [v, w]: adj[u])&#123;</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a>                <span class="cf">if</span>(dist[u] + w &lt; dist[v])&#123;</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>                    dist[v] = dist[u] + w;</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a>                    pq.push(&#123;dist[v], v&#125;);</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a>                &#125;</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a>            &#125;</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a>        &#125;</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a>        </span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true"></a>        <span class="cf">return</span> exp(-dist[end]);</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true"></a>    &#125;</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true"></a>&#125;;</span></code></pre></div>
+<p>基于上述分析，我们知道即使一个进入待访问集合的顶点有好几份copy在集合中，并不会影响我们的最终结果，那么，我们把<code>if(dist[u] + w &lt; dist[v])</code><strong>这个判断条件去掉可以嘛？不管能不能缩短到起点的距离每次都把通过不同中继点的所有可能到起点的距离值都压入优先队列行吗？</strong> 也是就我们把顶点插入优先队列的时候，进行更大规模的冗余的插入操作，不管该顶点的最短距离能不能缩小，通通把它们push进入优先队列的操作可行吗？</p>
+<p><strong>当图中没有环的时候是可以的</strong>，但是有环存在的时候，没有这个<code>if</code>条件判断，已经进入过优先队列中的顶点会再次进入优先队列中，环的存在会导致环上的顶点无限循环进入其中。因此我们需要设置一个类似于之前顺序查找的<code>expanded[]</code>数组来标记顶点是否被访问过:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">/* cpp code: use std::priority_queue and visited[] to implement Dijkstra&#39;s algorithm </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co">             without edge loose condition constraint</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="co">*/</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="kw">class</span> Solution &#123;</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="kw">public</span>:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    <span class="dt">double</span> maxProbability(<span class="dt">int</span> n, vector&lt;vector&lt;<span class="dt">int</span>&gt;&gt;&amp; edges, vector&lt;<span class="dt">double</span>&gt;&amp; succProb, <span class="dt">int</span> start, <span class="dt">int</span> end) &#123;</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>        </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>        <span class="co">// reconstruct the undirected graph using adjacent list</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>        vector&lt;vector&lt;pair&lt;<span class="dt">int</span>, <span class="dt">double</span>&gt;&gt; &gt; adj(n);</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>        <span class="cf">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; edges.size(); i++)&#123;</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>            adj[edges[i][<span class="dv">0</span>]].push_back(&#123;edges[i][<span class="dv">1</span>], -log(succProb[i])&#125;);</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>            adj[edges[i][<span class="dv">1</span>]].push_back(&#123;edges[i][<span class="dv">0</span>], -log(succProb[i])&#125;);</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>        &#125;</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a> </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>        <span class="co">/*********************        This is my test, faster than 100% C++ code   *********************/</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>        </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a>        vector&lt;<span class="dt">bool</span>&gt; visited(n, <span class="kw">false</span>);</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>        <span class="kw">typedef</span> pair&lt;<span class="dt">double</span>, <span class="dt">int</span>&gt; pdi;</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a>        priority_queue&lt;pdi, vector&lt;pdi&gt;, greater&lt;pdi&gt; &gt; pq; <span class="co">// &#123;cost, node_id&#125;</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a>        </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a>        pq.push(&#123;<span class="dv">0</span>, start&#125;);</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>        </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a>        <span class="cf">while</span>(!pq.empty())&#123;</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a>            <span class="kw">auto</span> [cost, u] = pq.top();</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a>            pq.pop();</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a>            </span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a>            <span class="cf">if</span>(u == end) <span class="cf">return</span> exp(-cost);</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a>            <span class="cf">if</span>(visited[u]) <span class="cf">continue</span>;</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a>            </span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a>            visited[u] = <span class="kw">true</span>;   <span class="co">// consider the case that there is a loop in the graph</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a>            </span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a>            <span class="cf">for</span>(<span class="kw">auto</span> [v, w]: adj[u])&#123;</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a>                pq.push(&#123;cost+w, v&#125;);  <span class="co">// although redundant push operations</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a>            &#125;</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true"></a>        &#125;</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true"></a>        </span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true"></a>        <span class="cf">return</span> <span class="fl">0.0</span>;</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true"></a>    &#125;</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true"></a>&#125;;</span></code></pre></div>
+<p>好的，那么现在我们知道了使用了<code>visited[]</code>数组来防止掉如图的环中死循环的情况下，我们允许<strong>redundant push operations</strong>的操作。我们再来看一道leetcode的题目-<a target="_blank" rel="noopener" href="https://leetcode.com/problems/cheapest-flights-within-k-stops/"><strong>787. Cheapest Flights Within K Stops</strong></a>:</p>
+<blockquote>
+<p>There are n cities connected by m flights. Each flight starts from city u and arrives at v with a price w. Now given all the cities and flights, together with starting city src and the destination dst, your task is to find the cheapest price from src to dst with up to k stops. If there is no such route, output -1.</p>
+</blockquote>
+<p>这题要求寻找出中继点不超过k个的情况下的起点到终点的最便宜路径，我们以价钱price作为权重的话，其实就是中继点不超过k个的情况下的最短路径问题。</p>
+<p>基于我们刚刚的分析，我们采用最后那种有<strong>redundant push operations</strong>且使用<code>std::priority_queue</code>的方法来实现Dijkstra算法，唯一要注意的是有不能超过k个中继点的约束条件。这个好办，我们给每个顶点增加一个层次的深度属性，具体来说就是起点深度为0，起点的邻接点深度增加1，以此类推，每次进行<strong>redundant push operations</strong>的时候，push进优先队列的顶点的深度等于当前访问顶点的深度增加1就行了。</p>
+<p>代码实现如下:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">/* cpp code for leetcode 787. Cheapest Flights Within K Stops */</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">class</span> Solution &#123;</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    <span class="kw">typedef</span> tuple&lt;<span class="dt">int</span>, <span class="dt">int</span>, <span class="dt">int</span>&gt; tiii;  <span class="co">// cost, stops, id</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="kw">public</span>:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    <span class="dt">int</span> findCheapestPrice(<span class="dt">int</span> n, vector&lt;vector&lt;<span class="dt">int</span>&gt;&gt;&amp; flights, <span class="dt">int</span> src, <span class="dt">int</span> dst, <span class="dt">int</span> K) &#123;</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>        <span class="co">// reconstruct the graph from edges using adjacent list</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>        vector&lt;vector&lt;pair&lt;<span class="dt">int</span>, <span class="dt">int</span>&gt; &gt; &gt; adj(n);</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>        <span class="cf">for</span>(<span class="kw">auto</span> edge: flights)&#123;</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>            adj[edge[<span class="dv">0</span>]].push_back(&#123;edge[<span class="dv">1</span>], edge[<span class="dv">2</span>]&#125;);</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>        &#125;</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>        </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>        priority_queue&lt;tiii, vector&lt;tiii&gt;, greater&lt;tiii&gt; &gt; pq;</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>        </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>        pq.emplace(<span class="dv">0</span>, <span class="dv">0</span>, src);</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>        </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>        <span class="cf">while</span>(!pq.empty())&#123;</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>            <span class="kw">auto</span> [cost, stop, u] = pq.top();</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>            pq.pop();</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>            </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>            <span class="cf">if</span>(u == dst) <span class="cf">return</span> cost;</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>            <span class="cf">if</span>(stop &gt; K) <span class="cf">continue</span>;</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>            </span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>            <span class="cf">for</span>(<span class="kw">auto</span> [v, w]: adj[u])&#123;</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a>                pq.emplace(cost+w, stop+<span class="dv">1</span>, v);</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a>            &#125;</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a>        &#125;</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a>        </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a>        <span class="cf">return</span> -<span class="dv">1</span>;</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a>    &#125;</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a>&#125;;</span></code></pre></div>
+<p>可以看到这种用不带邻接顶点边松弛的 <strong>redundant push operations</strong> 的实现，比用<code>std::set</code>来实现Dijkstra算法虽然没有那么贴近于Wikipedia的算法伪代码描述，但是对于写代码的人来说很简洁。你可以思考下，这道题如果用带邻接顶点边松弛的<code>std::priority_queue</code>来实现或者使用<code>std::set</code>怎么实现？ 你会发现会麻烦很多。</p>
+<p>OK， 到目前为止，我们求的都是从起点从终点这样“点对点、一对一”的最短路径，不要忘了，Dijkstra算法本来就是可以求出起点到非负权重图中所有顶点的最短距离，也即可以求出“一对多”的最短距离。只不过，我们在求“一对一”的最短路径的时候，当访问到终点的时候提前终止了算法的<code>while</code>循环，这是一种<code>early stop</code>的操作。</p>
+<h2 id="参考">参考</h2>
+<div id="refer-anchor-1">
+
+</div>
+<ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra's algorithm - Wikipedia</a>
+<div id="refer-anchor-2">
+
+</div></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://leetcode.com/problems/path-with-maximum-probability/">Leetcode 1514. Path with Maximum Probability</a>
+<div id="refer-anchor-2">
+
+</div></li>
+<li>[3] <a target="_blank" rel="noopener" href="https://leetcode.com/problems/cheapest-flights-within-k-stops/">Leetcode 787. Cheapest Flights Within K Stops</a></li>
+</ul>
+
+        </div>
+        <!-- .entry-content -->
+        <div class="single-reward">
+          <div class="reward-open">赏
+            <div class="reward-main">
+              <ul class="reward-row">
+                <li class="alipay-code"><img src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/donate/alipay.jpg"></li>
+                <li class="wechat-code"><img src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/donate/alipay.jpg"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre half previous">
+          
+            <a href="/2021/01/16/hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/avatar.png" data-src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-1.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/cover/bilibili-1.png">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                hexo常用命令</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2021/01/16/This-is-a-test%20-%202/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/avatar.png" data-src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/lazy.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/lazy.png">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                This is also a test</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
+      
+<div id="vcomments"></div>
+<script>
+  window.onload = function(){
+      var valine = new Valine();
+      valine.init({
+        el: '#vcomments',
+        appId: "6XizmOU54eRU3PNuBQSr0UMJ-gzGzoHsz",
+        appKey: "KzUBSaVERI5iqQByokcE1jd8",
+        path: window.location.pathname,
+        placeholder: "你是我一生只会遇见一次的惊喜 ..."
+      })
+  }
+</script>
+
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+          <a href="https://deepduke.github.io" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/tanzhilang.jpg" itemprop="image" alt="DeepDuke" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="https://deepduke.github.io" itemprop="url" rel="author">DeepDuke</a>
+            </h3>
+          </div>
+        </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>一只小可爱</p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
+</div>
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+
+
+    </div>    
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..."/>
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            // PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+    <!-- <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 DeepDuke<br>
+      powered_by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer> -->
+<footer id="colophon" class="site-footer" role="contentinfo">
+  <div class="site-info">
+    <div class="footertext">
+      <div class="img-preload">
+        <img src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/other/wordpress-rotating-ball-o.svg">
+        <img src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/other/disqus-preloader.svg">
+      </div>
+      <p style="color: #666666;">&copy2017 - &copy 2021</p>
+    </div>
+    <div class="footer-device">
+    <p style="font-family: 'Ubuntu', sans-serif;">
+        <span style="color: #b9b9b9;">Theme <a href="https://github.com/honjun/hexo-theme-sakura" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Sakura</a> <i class="iconfont icon-sakura rotating" style="color: #ffc0cb;display:inline-block"></i> , Powered by Hexo, Hosted by Github Pages</a>
+        </span>
+      </p>
+    </div>
+  </div><!-- .site-info -->
+</footer>
+
+
+
+<!-- <script src="/js/tocbot.js"></script> -->
+<script type="text/javascript" src="/js/lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script type="text/javascript" src="/js/InsightSearch.js"></script>
+<script type="text/javascript" src="/js/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/js/zoom.min.js"></script>
+<script type="text/javascript" src="/js/sakura-app.js"></script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine@1.3.4/dist/Valine.min.js'></script>
+<script src="/js/botui.js"></script>
+<!-- 不蒜子 网页计数器 -->
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script> -->
+<script type="text/javascript">
+/* <![CDATA[ */
+if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  var Poi = {"pjax":"1","movies":{"url": "","name":"","live":"close"},"windowheight":"fixed","codelamp":"close","ajaxurl":"","order":"asc","formpostion":"bottom"};
+} else {
+  var Poi = {"pjax":"1","movies":{"url": "","name":"","live":"open"},"windowheight":"auto","codelamp":"close","ajaxurl":"","order":"asc","formpostion":"bottom"};
+}
+/* ]]> */
+
+</script>
+<script>
+$(document).ready(function() {
+  if ($(".toc").length > 0 && document.body.clientWidth > 1200) {
+    if ($(".pattern-center").length > 0) { //有图的情况
+      tocbot.init({
+          // Where to render the table of contents.
+          tocSelector: '.toc', // 放置目录的容器
+          // Where to grab the headings to build the table of contents.
+          contentSelector: '.entry-content', // 正文内容所在
+          // Which headings to grab inside of the contentSelector element.
+          scrollSmooth: true,
+          headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+          headingsOffset: -400,
+          scrollSmoothOffset: -85
+      });
+    } else {
+      tocbot.init({
+          // Where to render the table of contents.
+          tocSelector: '.toc', // 放置目录的容器
+          // Where to grab the headings to build the table of contents.
+          contentSelector: '.entry-content', // 正文内容所在
+          // Which headings to grab inside of the contentSelector element.
+          scrollSmooth: true,
+          headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+          headingsOffset: -85,
+          scrollSmoothOffset: -85
+      });
+    }
+    var offsetTop = $('.toc').offset().top - 95;
+    window.onscroll = function() {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrollTop >= offsetTop) {
+        $('.toc').addClass('toc-fixed');
+      } else {
+        $('.toc').removeClass('toc-fixed');
+      }
+    }
+  }
+});
+</script>
+
+    <div class="openNav no-select" style="height: 50px;">
+      <div class="iconflat no-select" style="width: 50px; height: 50px;">
+        <div class="icon"></div>
+      </div>
+      <div class="site-branding search-form-submit">
+        <i class="iconfont js-toggle-search iconsearch icon-search"></i>
+      </div>
+    </div>
+  </section>
+  <div id="mo-nav" class="">
+  <div class="m-avatar">
+    <img src="https://cdn.jsdelivr.net/gh/deepduke/deepduke.github.io@main/img/tanzhilang.jpg">
+  </div>
+  <p style="text-align: center; color: #333; font-weight: 900; font-family: 'Ubuntu', sans-serif; letter-spacing: 1.5px">Sakura@DeepDuke</p>
+  <p style="text-align: center; word-spacing: 20px;">
+    
+      
+        <a href="http://github.com/deepduke" class="fa fa-github" target="_blank" style="color: #333; margin-left:20px"></a>
+      
+    
+  </p>
+  <ul id="menu-new-1" class="menu">
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+            首页
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            归档
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/%E6%8A%80%E6%9C%AF/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  技术
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/%E7%94%9F%E6%B4%BB/">
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                  生活
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="javascript:;">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-list-ul faa-vertical" aria-hidden="true"></i>
+            清单
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/tags/%E6%82%A6%E8%AF%BB/">
+                  <i class="fa fa-th-list faa-bounce" aria-hidden="true"></i>
+                  书单
+                </a>
+              </li>
+            
+              <li>
+                <a href="/bangumi/">
+                  <i class="fa fa-film faa-vertical" aria-hidden="true"></i>
+                  番组
+                </a>
+              </li>
+            
+              <li>
+                <a href="/music/">
+                  <i class="fa fa-headphones" aria-hidden="true"></i>
+                  歌单
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/comment/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+            留言板
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/links/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-link faa-shake" aria-hidden="true"></i>
+            友人帐
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+            关于
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/about/">
+                  <i class="fa fa-meetup" aria-hidden="true"></i>
+                  我？
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/atom.xml">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-rss faa-pulse" aria-hidden="true"></i>
+            RSS
+          </span>
+        </a>
+        
+      </li>
+    
+  </ul>
+  <p style="text-align: center; font-size: 13px; color: #b9b9b9;">&copy 2019 hexo-sakura</p>
+</div>
+<button onclick="topFunction()" class="mobile-cd-top" id="moblieGoTop" title="Go to top" style="display: none;"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<style>
+  .aplayer .aplayer-lrc {
+    height: 35px;
+  }
+  .aplayer .aplayer-lrc p{
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px !important;
+  }
+  .aplayer .aplayer-lrc p.aplayer-lrc-current{
+    color: #FF1493;
+  }
+  .aplayer.aplayer-narrow .aplayer-body{
+    left: -66px !important;
+  }
+  .aplayer.aplayer-fixed .aplayer-lrc {
+    display: none;
+  }
+  .aplayer .aplayer-lrc.aplayer-lrc-hide {
+      display:none !important;
+  }
+  .aplayer.aplayer-fixed .lrc-show {
+    display: block;
+    background: rgba(255, 255, 255, 0.8);
+  }
+</style>
+<meting-js
+
+    id="2660651585"
+
+    server="netease"
+
+    type="playlist"
+
+    fixed="true"
+
+    autoplay="false"
+
+    loop="all"
+
+    order="random"
+
+    preload="auto"
+
+    volume="0.7"
+
+    mutex="true"
+
+</meting-js>
+<script>
+  $(function(){
+    $('body').on('click', '.aplayer', function(){
+      if($('.aplayer-button').hasClass('aplayer-play')) {
+        $('.aplayer-lrc').removeClass('lrc-show');
+      } else {
+        $('.aplayer-lrc').addClass('lrc-show');
+      }
+    })
+  });
+</script>
+</body>
+</html>
