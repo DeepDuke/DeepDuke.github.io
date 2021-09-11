@@ -305,7 +305,7 @@ html {
 
 [type="radio"]:not(:checked)+span:before,
 [type="radio"]:not(:checked)+span:after {
-    border-radius: 50%
+    border-radius: 20%
 }
 
 [type="radio"]:not(:checked)+span:before,
