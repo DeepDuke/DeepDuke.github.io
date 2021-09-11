@@ -6,7 +6,7 @@
   <link href="https://deepduke.github.io/atom.xml" rel="self"/>
   
   <link href="https://deepduke.github.io/"/>
-  <updated>2021-01-17T14:12:49.157Z</updated>
+  <updated>2021-02-05T15:22:26.700Z</updated>
   <id>https://deepduke.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>A star 算法</title>
+    <link href="https://deepduke.github.io/2021/02/02/A-star-%E7%AE%97%E6%B3%95/"/>
+    <id>https://deepduke.github.io/2021/02/02/A-star-%E7%AE%97%E6%B3%95/</id>
+    <published>2021-02-02T09:42:40.000Z</published>
+    <updated>2021-02-05T15:22:26.700Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;a算法a-star算法&quot;&gt;A*算法（A star算法）&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;A&lt;/em&gt;算法(念作A star算法)是一种路径规划中常用的算法。如果你知道&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="技术" scheme="https://deepduke.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>hexo常用命令</title>
